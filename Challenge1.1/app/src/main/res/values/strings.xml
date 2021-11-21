@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">We The Animals</string>
+    <string name="animal_choser">Chose an animal</string>
+    <string name="edit_info">Edit Info</string>
+    <string name="animal_edit_name">New Name:</string>
+    <string name="animal_edit_age">New Age:</string>
+    <string name="animal_edit_owner">New Owner:</string>
+    <string name="save">Save</string>
+    <string name="enter_owner_optional">Enter Owner (optional)</string>
+    <string name="enter_name_optional">Enter Name (optional)</string>
+    <string name="enter_age_optional">Enter Age (optional)</string>
+    <string-array name="animals">
+        <item>Frog</item>
+        <item>Rhino</item>
+        <item>Snail</item>
+    </string-array>
+</resources>

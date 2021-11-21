@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imganimal"
+        android:layout_width="232dp"
+        android:layout_height="191dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/frog" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:onClick="getSelectedAnimal"
+        android:text="@string/edit_info" />
+
+    <TextView
+        android:id="@+id/animal_info"
+        android:layout_width="125dp"
+        android:layout_height="175dp"
+        android:text="null" />
+
+
+
+</LinearLayout>

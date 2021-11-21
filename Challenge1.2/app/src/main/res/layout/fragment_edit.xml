@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".EditFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_edit_owner"/>
+
+    <EditText
+        android:id="@+id/edit_animal_owner"
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/enter_owner_optional"
+        android:minHeight="48dp"
+        android:maxLength="50"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_edit_name"/>
+
+    <EditText
+        android:id="@+id/edit_animal_name"
+        android:layout_width="236dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/enter_name_optional"
+        android:minHeight="48dp"
+        android:maxLength="50"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/animal_edit_age"/>
+
+    <EditText
+        android:id="@+id/edit_animal_age"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/enter_age_optional"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:maxLength="3"/>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"/>
+</LinearLayout>
