@@ -33,7 +33,7 @@ public class DBOperations extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table " + TABLE_NAME + "(Title TEXT primary key, Details TEXT)");
+        sqLiteDatabase.execSQL("create table " + TABLE_NAME + "(id INTEGER primary key autoincrement not null, Title TEXT, Details TEXT)");
     }
 
     @Override

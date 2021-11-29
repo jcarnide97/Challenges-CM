@@ -60,7 +60,7 @@ public class TextNotesFragment extends Fragment implements DBOperations.Callback
         textView.setText(title);
         editText = (EditText) view.findViewById(R.id.note_text);
 
-        // access db to read note details based on the title clicked - NOT WORKING YET
+        // access db to read note details based on the title clicked
         dbOps = new DBOperations(getActivity());
         atomicNotes = dbOps.getNoteDetails(title);
         noteDetails = atomicNotes.get();
@@ -82,7 +82,7 @@ public class TextNotesFragment extends Fragment implements DBOperations.Callback
             return true;
         } else if (item.getItemId() == R.id.save) {
             noteDetails = editText.getText().toString();
-            // write note details to db - NOT WORKING YET
+            // write note details to db
             Boolean checkEditNoteDetails = dbOps.editNoteDetails(title, noteDetails);
             Toast.makeText(getActivity(), "Notes Saved Successfully", Toast.LENGTH_SHORT).show();
         }
