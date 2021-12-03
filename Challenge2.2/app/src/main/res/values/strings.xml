@@ -5,4 +5,7 @@
     <string name="save">Save</string>
     <string name="note_details">Note Details</string>
     <string name="back">Back</string>
+    <string name="subscribe_to_topic">Subscribe to Topic</string>
+    <string name="unsubscribe_to_topic">Unsubscribe to Topic</string>
+    <string name="publish_a_note">Publish a Note</string>
 </resources>

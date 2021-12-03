@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +29,15 @@ import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,17 +48,22 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 
 public class ListNotesFragment extends Fragment implements DBOperations.Callback, MainActivity.FragmentChanger {
     private ListView listView;
-    private ArrayList<String> titleList;
+    private ArrayList<String> titleList = new ArrayList<>();
     private String newTitle;
     private String removeNote;
     private ArrayAdapter arrayAdapter;
     private DBOperations dbOps;
     private String title, noteDetails;
+    private ArrayList<String> myTopicsList = new ArrayList<>();
+
+    private MQTTHelper mqttHelper;
+    private final DBOperations.Callback callback = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +82,8 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
 
         dbOps = new DBOperations(getActivity());
         readData();
+
+        startMqtt();
 
         arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, titleList);
         listView.setAdapter(arrayAdapter);
@@ -189,16 +206,127 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
             });
             dialog.show();
             return true;
+        } else if (item.getItemId() == R.id.subscribe) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setTitle("Subscribe to Topic");
+
+            final EditText topicName = new EditText(getActivity());
+            topicName.setInputType(InputType.TYPE_CLASS_TEXT);
+            dialog.setView(topicName);
+
+            dialog.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    String subTopic = topicName.getText().toString().toLowerCase();
+                    if (!(myTopicsList.contains(subTopic))) {
+                        myTopicsList.add(subTopic);
+                        Boolean checkSubTopic = dbOps.insertTopic(subTopic);
+                        // add subscription to topic in mqtt
+                        mqttHelper.subscribeToTopic(subTopic);
+                        Toast.makeText(getActivity(), "Subscribed to " + subTopic, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Already Subscribed to " + subTopic, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            dialog.show();
+            return true;
+        } else if (item.getItemId() == R.id.unsubscribe) {
+            if (myTopicsList.isEmpty()) {
+                Toast.makeText(getActivity(), "You're not subscribed to any topic", Toast.LENGTH_SHORT).show();
+            } else {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setTitle("Select a Topic to Unsubscribe");
+
+                dialog.setItems(myTopicsList.toArray(new String[myTopicsList.size()]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String unsubTopic = myTopicsList.get(i);
+                        // UNSUBSCRIBE TO TOPIC
+                        Toast.makeText(getActivity(), "Unsubscribed to " + unsubTopic, Toast.LENGTH_SHORT).show();
+                        mqttHelper.unsubscribeToTopic(unsubTopic);
+                        myTopicsList.remove(unsubTopic);
+                        Boolean checkUnsubTopic = dbOps.deleteTopic(unsubTopic);
+                    }
+                });
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                dialog.show();
+                return true;
+            }
+        } else if (item.getItemId() == R.id.publish) {
+            if (titleList.isEmpty()) {
+                Toast.makeText(getActivity(), "You don't have any notes", Toast.LENGTH_SHORT).show();
+            } else {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setTitle("Select a Note to Publish");
+
+                dialog.setItems(titleList.toArray(new String[titleList.size()]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int iNote) {
+                        AlertDialog.Builder dialog2 = new AlertDialog.Builder(getActivity());
+                        dialog2.setTitle("Publish to Which Topic");
+
+                        final EditText topicName = new EditText(getActivity());
+                        topicName.setInputType(InputType.TYPE_CLASS_TEXT);
+                        dialog2.setView(topicName);
+
+                        dialog2.setPositiveButton("Publish", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String pubTopic = topicName.getText().toString().toLowerCase();
+                                String pubTitle = titleList.get(iNote);
+                                AtomicReference<String> atomicNotes = dbOps.getNoteDetails(pubTitle, callback);
+                                String pubDetails = atomicNotes.get();
+                                // PUBLISH NOTE TO TOPIC
+                                mqttHelper.publishNote(pubTopic, pubTitle, pubDetails);
+                                Toast.makeText(getActivity(), titleList.get(iNote) + " Published to " + pubTopic, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        dialog2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        dialog2.show();
+                    }
+                });
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                dialog.show();
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void readData() {
+        // access db to read titles
         if (null == titleList) {
             titleList = new ArrayList<String>();
         }
-        // access db to read data
         titleList = dbOps.getTitles();
+        // access db to read topics
+        if (null == myTopicsList) {
+            myTopicsList = new ArrayList<String>();
+        }
+        myTopicsList = dbOps.getTopics();
     }
 
     public void addTitle(String newTitle) {
@@ -249,5 +377,61 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
         transaction.remove(ListNotesFragment.this);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void startMqtt() {
+        mqttHelper = new MQTTHelper(getActivity().getApplicationContext());
+        mqttHelper.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean reconnect, String serverURI) {
+                if (myTopicsList != null) {
+                    for (String topic : myTopicsList) {
+                        mqttHelper.subscribeToTopic(topic);
+                    }
+                }
+            }
+
+            @Override
+            public void connectionLost(Throwable cause) {
+
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                if (myTopicsList.contains(topic)) {
+                    String msgReceived = new String(message.getPayload());
+                    String[] note = msgReceived.split("###");
+                    String noteTitle = note[0];
+                    String noteDetails = note[1];
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    dialog.setTitle("New Note " + noteTitle + " Received! Want to add it?");
+                    dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (!(titleList.contains(noteTitle))) {
+                                titleList.add(noteTitle);
+                                dbOps.insertNoteData(noteTitle, noteDetails);
+                                listView.requestLayout();
+                                Toast.makeText(getActivity(), "New Note Added", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "You already have a note with this title", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    dialog.show();
+                }
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
     }
 }

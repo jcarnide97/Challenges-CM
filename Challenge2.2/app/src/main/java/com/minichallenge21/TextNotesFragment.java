@@ -62,7 +62,7 @@ public class TextNotesFragment extends Fragment implements DBOperations.Callback
 
         // access db to read note details based on the title clicked
         dbOps = new DBOperations(getActivity());
-        atomicNotes = dbOps.getNoteDetails(title);
+        atomicNotes = dbOps.getNoteDetails(title, this);
         noteDetails = atomicNotes.get();
         onCompleteRead(noteDetails);
 

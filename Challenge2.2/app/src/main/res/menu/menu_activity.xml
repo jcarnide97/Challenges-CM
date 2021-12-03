@@ -6,7 +6,7 @@
         android:title="@string/search"
         android:icon="@drawable/ic_search"
         android:id="@+id/search"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 
     <item
@@ -14,5 +14,23 @@
         android:icon="@drawable/ic_add"
         android:id="@+id/add_title"
         app:showAsAction="always" />
+
+    <item
+        android:title="@string/subscribe_to_topic"
+        android:icon="@drawable/ic_subscribe"
+        android:id="@+id/subscribe"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:title="@string/unsubscribe_to_topic"
+        android:icon="@drawable/ic_unsubscribe"
+        android:id="@+id/unsubscribe"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:title="@string/publish_a_note"
+        android:icon="@drawable/ic_publish"
+        android:id="@+id/publish"
+        app:showAsAction="ifRoom" />
 
 </menu>
