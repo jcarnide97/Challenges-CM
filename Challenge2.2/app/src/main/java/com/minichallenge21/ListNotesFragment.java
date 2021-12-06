@@ -64,6 +64,7 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
 
     private MQTTHelper mqttHelper;
     private final DBOperations.Callback callback = this;
+    private String userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,8 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
         dbOps = new DBOperations(getActivity());
         readData();
 
+        MainActivity activity = (MainActivity) getActivity();
+        userId = activity.getUserId();
         startMqtt();
 
         arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, titleList);
@@ -289,7 +292,7 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
                                 AtomicReference<String> atomicNotes = dbOps.getNoteDetails(pubTitle, callback);
                                 String pubDetails = atomicNotes.get();
                                 // PUBLISH NOTE TO TOPIC
-                                mqttHelper.publishNote(pubTopic, pubTitle, pubDetails);
+                                mqttHelper.publishNote(pubTopic, mqttHelper.getName(), pubTitle, pubDetails);
                                 Toast.makeText(getActivity(), titleList.get(iNote) + " Published to " + pubTopic, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -380,7 +383,7 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
     }
 
     public void startMqtt() {
-        mqttHelper = new MQTTHelper(getActivity().getApplicationContext());
+        mqttHelper = new MQTTHelper(getActivity().getApplicationContext(), userId);
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
@@ -401,30 +404,36 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
                 if (myTopicsList.contains(topic)) {
                     String msgReceived = new String(message.getPayload());
                     String[] note = msgReceived.split("###");
-                    String noteTitle = note[0];
-                    String noteDetails = note[1];
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                    dialog.setTitle("New Note " + noteTitle + " Received! Want to add it?");
-                    dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (!(titleList.contains(noteTitle))) {
-                                titleList.add(noteTitle);
-                                dbOps.insertNoteData(noteTitle, noteDetails);
-                                listView.requestLayout();
-                                Toast.makeText(getActivity(), "New Note Added", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), "You already have a note with this title", Toast.LENGTH_SHORT).show();
+                    String name = note[0];
+                    String noteTitle = note[1];
+                    String noteDetails = note[2];
+                    if (name.equals(mqttHelper.getName())) {
+                        // User does not receive its own messages back
+                        System.out.println("Don't receive my own messages");
+                    } else {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                        dialog.setTitle("New Note " + noteTitle + " Received! Want to add it?");
+                        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (!(titleList.contains(noteTitle))) {
+                                    titleList.add(noteTitle);
+                                    dbOps.insertNoteData(noteTitle, noteDetails);
+                                    listView.requestLayout();
+                                    Toast.makeText(getActivity(), "New Note Added", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "You already have a note with this title", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
-                    dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-                    dialog.show();
+                        });
+                        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        dialog.show();
+                    }
                 }
             }
 

@@ -30,8 +30,10 @@ public class MQTTHelper {
     final String server = "tcp://broker.hivemq.com:1883";
     final String clientId = MqttClient.generateClientId();
     private DBOperations DB;
+    private String name;
 
-    public MQTTHelper(Context context) {
+    public MQTTHelper(Context context, String name) {
+        this.name = name;
         client = new MqttAndroidClient(context, server, clientId);
 
         client.setCallback(new MqttCallbackExtended() {
@@ -91,8 +93,8 @@ public class MQTTHelper {
         }
     }
 
-    public void publishNote(String topicName, String noteTitle, String noteDetails) {
-        String message = noteTitle + "###" + noteDetails;
+    public void publishNote(String topicName, String clientName, String noteTitle, String noteDetails) {
+        String message = clientName + "###" + noteTitle + "###" + noteDetails;
         try {
             client.publish(topicName, message.getBytes(), 0, false);
         } catch (MqttException e) {
@@ -134,5 +136,9 @@ public class MQTTHelper {
         } catch (MqttException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getName() {
+        return name;
     }
 }
