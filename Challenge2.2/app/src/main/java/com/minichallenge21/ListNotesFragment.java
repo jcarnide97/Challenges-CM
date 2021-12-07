@@ -278,7 +278,7 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
                     @Override
                     public void onClick(DialogInterface dialogInterface, int iNote) {
                         AlertDialog.Builder dialog2 = new AlertDialog.Builder(getActivity());
-                        dialog2.setTitle("Publish to Which Topic");
+                        dialog2.setTitle("Publish to Which Topics?\n(example: topic1,topic2,...)");
 
                         final EditText topicName = new EditText(getActivity());
                         topicName.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -287,13 +287,17 @@ public class ListNotesFragment extends Fragment implements DBOperations.Callback
                         dialog2.setPositiveButton("Publish", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                String pubTopic = topicName.getText().toString().toLowerCase();
+                                String topics = topicName.getText().toString().toLowerCase();
+                                String[] topicsToPub = topics.split(",");
+                                // Separate each topic inserted by commas and then individually publish the note to them
                                 String pubTitle = titleList.get(iNote);
                                 AtomicReference<String> atomicNotes = dbOps.getNoteDetails(pubTitle, callback);
                                 String pubDetails = atomicNotes.get();
                                 // PUBLISH NOTE TO TOPIC
-                                mqttHelper.publishNote(pubTopic, mqttHelper.getName(), pubTitle, pubDetails);
-                                Toast.makeText(getActivity(), titleList.get(iNote) + " Published to " + pubTopic, Toast.LENGTH_SHORT).show();
+                                for (String s : topicsToPub) {
+                                    mqttHelper.publishNote(s, mqttHelper.getName(), pubTitle, pubDetails);
+                                }
+                                Toast.makeText(getActivity(), titleList.get(iNote) + " Published to Inserted Topics", Toast.LENGTH_SHORT).show();
                             }
                         });
 
