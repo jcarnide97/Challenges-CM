@@ -1,5 +1,5 @@
 # Projeto-CM
-Challenges e Projeto de Computação Móvel 2021/22
+Challenges de Computação Móvel 2021/22
 
 Challenge 1.1 - Activities
 
