@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".ui.profile.ProfileFragment" >
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                android:padding="20dp"
+                android:layout_centerHorizontal="true"
+                android:elevation="0dp">
+                <ImageView
+                    android:id="@+id/imageProfile2"
+                    android:layout_width="240dp"
+                    android:layout_height="240dp"
+                    tools:src="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/nameProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageProfile"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/descriptionProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameProfile"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:text="descriptionProfile" />
+
+            <TextView
+                android:id="@+id/totalScoreProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_below="@+id/descriptionProfile"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:textAlignment="center"
+                android:text="@string/score_profile"/>
+
+            <TextView
+                android:id="@+id/scoreProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/totalScoreProfile"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:text="score"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <FrameLayout
+                android:id="@+id/progress_bar"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/scoreProfile"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar2"
+                    android:progressDrawable="@drawable/progress_bar"
+                    android:layout_width="240dp"
+                    android:layout_height="50dp"
+                    android:textAlignment="center"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/txtProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/percentage_profile"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+
+
+            <TextView
+                android:id="@+id/topScoresProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_below="@+id/progress_bar"
+                android:textStyle="bold"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/top_profile"
+                android:textAlignment="center" />
+
+            <ListView
+                android:id="@+id/listTopScores"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:listSelector="@android:color/transparent"
+                android:layout_below="@+id/topScoresProfile"
+                android:layout_alignStart="@+id/imageProfile"
+                android:layout_alignEnd="@+id/imageProfile"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

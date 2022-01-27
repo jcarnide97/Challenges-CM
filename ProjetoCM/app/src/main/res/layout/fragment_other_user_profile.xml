@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".ui.profile.ProfileFragment" >
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        tools:ignore="MissingConstraints">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/otherUserImgProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                android:padding="20dp"
+                android:layout_centerHorizontal="true"
+                android:elevation="0dp">
+                <ImageView
+                    android:id="@+id/otheUserImgProfile2"
+                    android:layout_width="240dp"
+                    android:layout_height="240dp"
+                    tools:src="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/other_usernameProfile"
+                android:textStyle="bold"
+                android:textSize="35sp"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/otherUserImgProfile"
+                android:layout_alignStart="@+id/otherUserImgProfile"
+                android:layout_alignEnd="@+id/otherUserImgProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:textAlignment="center"
+                android:text="Name" />
+
+            <TextView
+                android:id="@+id/other_descriptionProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/other_usernameProfile"
+                android:layout_alignStart="@+id/otherUserImgProfile"
+                android:layout_alignEnd="@+id/otherUserImgProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:text="descriptionProfile" />
+
+            <TextView
+                android:id="@+id/other_totalScoreProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:layout_below="@+id/other_descriptionProfile"
+                android:layout_alignStart="@+id/otherUserImgProfile"
+                android:layout_alignEnd="@+id/otherUserImgProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:textAlignment="center"
+                android:text="@string/score_profile"/>
+
+            <TextView
+                android:id="@+id/other_scoreProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:layout_below="@+id/other_totalScoreProfile"
+                android:layout_alignStart="@+id/otherUserImgProfile"
+                android:layout_alignEnd="@+id/otherUserImgProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:text="score"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/other_topScoresProfile"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_below="@+id/other_scoreProfile"
+                android:textStyle="bold"
+                android:layout_alignStart="@+id/otherUserImgProfile"
+                android:layout_alignEnd="@+id/otherUserImgProfile"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/top_profile"
+                android:textAlignment="center" />
+
+            <ListView
+                android:id="@+id/other_listTopScores"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:listSelector="@android:color/transparent"
+                android:layout_below="@+id/other_topScoresProfile"
+                android:layout_alignStart="@+id/otherUserImgProfile"
+                android:layout_alignEnd="@+id/otherUserImgProfile"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

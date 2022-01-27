@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This XML represents a single entry on the ListView in ListFragment -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<TextView
+    android:id="@+id/blank"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:textStyle="normal|bold" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/blank"
+    android:layout_alignParentEnd="true"
+    android:id="@+id/txtRecentTime"
+    android:paddingRight="5dp"/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/blank"
+    android:layout_alignParentStart="true"
+    android:layout_marginTop="5dp"
+    android:id="@+id/txtRecentBody"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+    android:textSize="18sp"
+    android:paddingLeft="7dp"/>
+</RelativeLayout>

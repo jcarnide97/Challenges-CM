@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.projetocm.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_quizDetailsFragment"
+            app:destination="@id/quizDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+        <action
+            android:id="@+id/action_nav_home_to_dialogFab"
+            app:destination="@id/dialogFab" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.projetocm.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_editFragment"
+            app:destination="@id/editFragment" />
+        <action
+            android:id="@+id/action_nav_profile_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.example.projetocm.ui.chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/nav_recent"
+        android:name="com.example.projetocm.ui.recent.RecentActivityFragment"
+        android:label="@string/menu_recent"
+        tools:layout="@layout/fragment_recent" />
+
+    <fragment
+        android:id="@+id/nav_social"
+        android:name="com.example.projetocm.ui.social.SocialFragment"
+        android:label="@string/menu_social"
+        tools:layout="@layout/fragment_social" >
+        <action
+            android:id="@+id/action_nav_social_to_otherUserProfile"
+            app:destination="@id/otherUserProfile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_leaderboard"
+        android:name="com.example.projetocm.ui.leaderboard.LeaderboardFragment"
+        android:label="@string/menu_leaderboard"
+        tools:layout="@layout/fragment_leaderboard" />
+    <fragment
+        android:id="@+id/quizDetailsFragment"
+        android:name="com.example.projetocm.ui.home.QuizDetailsFragment"
+        android:label="Quiz Details"
+        tools:layout="@layout/fragment_quiz_details">
+        <action
+            android:id="@+id/action_quizDetailsFragment_to_quizAnswerFragment"
+            app:destination="@id/quizAnswerFragment" />
+        <action
+            android:id="@+id/action_quizDetailsFragment_to_quizChatFragment"
+            app:destination="@id/quizChatFragment" />
+        <action
+            android:id="@+id/action_quizDetailsFragment_to_leaderboardQuizFragment"
+            app:destination="@id/leaderboardQuizFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.projetocm.ui.profile.EditFragment"
+        android:label="@string/edit_fragment"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/quizAnswerFragment"
+        android:name="com.example.projetocm.ui.quizAnswers.QuizAnswerFragment"
+        android:label="QuizAnswerFragment"
+        tools:layout="@layout/fragment_quiz_answer">
+        <action
+            android:id="@+id/action_quizAnswerFragment_to_quizVerdictFragment"
+            app:destination="@id/quizVerdictFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizVerdictFragment"
+        android:name="com.example.projetocm.ui.quizAnswers.QuizVerdictFragment"
+        android:label="QuizVerdictFragment"
+        tools:layout="@layout/fragment_quiz_veredict">
+        <action
+            android:id="@+id/action_quizVerdictFragment_to_quizFinalResultFragment"
+            app:destination="@id/quizFinalResultFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/dialogFab"
+        android:name="com.example.projetocm.ui.home.DialogFab"
+        android:label="DialogFab"
+        tools:layout="@layout/fab_dialog"/>
+    <fragment
+        android:id="@+id/quizFinalResultFragment"
+        android:name="com.example.projetocm.ui.quizAnswers.QuizFinalResultFragment"
+        android:label="Final Results"
+        tools:layout="@layout/fragment_final_results">
+        <action
+            android:id="@+id/action_quizFinalResultFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_quizFinalResultFragment_to_leaderboardQuizFragment"
+            app:destination="@id/leaderboardQuizFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherUserProfile"
+        android:name="com.example.projetocm.ui.social.OtherUserProfile"
+        android:label="Profile"
+        tools:layout="@layout/fragment_other_user_profile"/>
+    <fragment
+        android:id="@+id/quizChatFragment"
+        android:name="com.example.projetocm.ui.chat.QuizChatFragment"
+        android:label="Quiz Chat"
+        tools:layout="@layout/fragment_quiz_chat" />
+    <fragment
+        android:id="@+id/leaderboardQuizFragment"
+        android:name="com.example.projetocm.ui.leaderboard.LeaderboardQuizFragment"
+        android:label="Quiz Leaderboard"
+        tools:layout="@layout/fragment_leaderboard_quiz" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.projetocm.ui.profile.HistoryFragment"
+        android:label="@string/menu_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_history_details"
+            app:destination="@id/history_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/history_details"
+        android:name="com.example.projetocm.ui.profile.HistoryDetails"
+        android:label="@string/menu_history_details"
+        tools:layout="@layout/fragment_history_details" />
+</navigation>
