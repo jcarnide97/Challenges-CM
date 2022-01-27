@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "866648226483",
+    "firebase_url": "https://cmquiz-f0d08-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "cmquiz-f0d08",
+    "storage_bucket": "cmquiz-f0d08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866648226483:android:869ef086d0c2e78d050ec6",
+        "android_client_info": {
+          "package_name": "com.example.projetocm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866648226483-11aqvs836m4o9011eqb7t3nbvjngg5vs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projetocm",
+            "certificate_hash": "6095390adbeb1d7c4d81b9785c7a9161e344e1e8"
+          }
+        },
+        {
+          "client_id": "866648226483-k73924u3i9qhjt4hismouo86qcahooei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChrB50ORD2eHRM4ZRl3GoPVgv5aHzdYRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866648226483-k73924u3i9qhjt4hismouo86qcahooei.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
